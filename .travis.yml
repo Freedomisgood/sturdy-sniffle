@@ -1,9 +1,10 @@
 language: node_js
 node_js:
-  - "16.13.1"
+  - "lts/*"
   
 branches:
   only:
+    - main
     - master
 
 install:
@@ -14,3 +15,11 @@ script:
 
 after_success:
   - echo "success!"
+
+services:
+  - docker
+
+# passed: git push成功
+# Broken: git push失败
+# still failed: amend失败
+# fixed: amend成功
