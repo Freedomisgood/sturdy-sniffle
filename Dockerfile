@@ -2,7 +2,7 @@ FROM nginx:latest
 LABEL AUTHOR=MRLI
 LABEL EMAIL=1063052964@qq.com
 
-VOLUME /usr/share/nginx/html/
-VOLUME /etc/nginx/conf.d/default.conf
+COPY dist/  /usr/share/nginx/html/
+COPY nginx/default.conf  /etc/nginx/conf.d/default.conf
 
-ENTRYPOINT service nginx start
+RUN echo 'echo init ok!!'

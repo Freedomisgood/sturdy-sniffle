@@ -1,3 +1,8 @@
+# self
+.idea/
+*.zip
+
+
 .DS_Store
 node_modules
 /dist

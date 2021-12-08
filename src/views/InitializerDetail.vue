@@ -49,6 +49,8 @@
         combileURLandParams
     } from "../utils/index.js"
 
+import requests from "../utils/requests/index.js"
+
 
     function simplyData(params, str) {
         const res = {}
@@ -73,7 +75,7 @@
         setup() {
             const route = useRoute()
             const template = ref(route.params.template)
-            
+
             const formRef = ref(null)
             const message = useMessage()
             const configData = reactive({
@@ -96,10 +98,12 @@
 
             async function generate() {
                 var a = document.createElement('a');
-                let params = { ...configData.data } 
+                let params = {
+                    ...configData.data
+                }
                 params.template = template.value
-                
-                var url = combileURLandParams("http://127.0.0.1:5501/api/v1/generate", params)
+
+                var url = combileURLandParams(requests.URLs.generate, params)
                 a.href = url;
                 a.click();
             }

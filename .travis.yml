@@ -13,7 +13,13 @@ install:
 script:
   - yarn build
 
+before_script:
+  - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
+  
+# 不指定tag, 默认为latest
 after_success:
+  - docker build -t nymrli/sucsoft-inititializer-front .
+  - docker push nymrli/sucsoft-inititializer-front
   - echo "success!"
 
 services:
