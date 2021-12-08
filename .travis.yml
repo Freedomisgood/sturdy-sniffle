@@ -8,13 +8,13 @@ branches:
     - master
 
 install:
-  - npm install yarn 
-
-script:
-  - yarn build
+  - npm install yarn
 
 before_script:
   - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
+  
+script:
+  - yarn build
   
 # 不指定tag, 默认为latest
 after_success:

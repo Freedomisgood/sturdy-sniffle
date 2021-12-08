@@ -1,6 +1,6 @@
 module.exports = {
-     publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
-      outputDir: "distx",
+    publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
+    outputDir: "dist",
     css: {
         loaderOptions: {
             sass: {

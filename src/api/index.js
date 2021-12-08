@@ -10,7 +10,6 @@ const getOption = (template) => {
 }
 
 
-// deprecated
 const getAllOptions = () => {
     console.log("getAllOptions")
     return requests({
