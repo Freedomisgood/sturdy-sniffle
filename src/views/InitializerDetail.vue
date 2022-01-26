@@ -1,5 +1,8 @@
 <template>
-    <h1>{{ $route.params.template }} </h1>
+    <div class="titleDiv">
+        <a title="点击-立即清除缓存"><h1 @click="clearCacheAndrefresh">{{ $route.params.template }}</h1></a>
+    </div>
+    
     <div class="form-table-div">
         <n-form style="width: 500px;" :model="configData.data" :label-width="120" ref="formRef">
             <!-- config为每一个配置项 -->
@@ -37,12 +40,13 @@
         NRadioButton,
     } from 'naive-ui'
     import {
-        useRoute
+        useRoute,
+        useRouter
     } from "vue-router"
 
     import {
         getOption,
-        doGenerte
+        clearCache
     } from "../api/index.js"
 
     import {
@@ -74,6 +78,7 @@ import requests from "../utils/requests/index.js"
 
         setup() {
             const route = useRoute()
+            const router = useRouter()
             const template = ref(route.params.template)
 
             const formRef = ref(null)
@@ -108,23 +113,34 @@ import requests from "../utils/requests/index.js"
                 a.click();
             }
 
-
+            
+            function clearCacheAndrefresh(){
+                clearCache()
+                router.go(0)
+            }
+            
             return {
                 formRef,
                 configData,
-                generate
+                generate,
+                clearCacheAndrefresh
             }
         }
     })
 </script>
 
-
-<style type="scss">
+<style scoped lang="scss">
     .form-table-div {
         display: flex;
         align-items: center;
         justify-content: center;
-        
-  
     }
+    
+   
+   .titleDiv {
+      &:hover{
+          background-color: ghostwhite;
+          cursor:pointer;
+      } 
+   }
 </style>

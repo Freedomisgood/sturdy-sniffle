@@ -1,7 +1,7 @@
 <template>
     <n-layout-sider class="height" bordered show-trigger collapse-mode="width" :collapsed-width="64" :width="240"
         :native-scrollbar="false" :inverted="thethemecolor">
-        <n-menu :inverted="thethemecolor" :collapsed-width="64" :collapsed-icon-size="22" default-expand-all="true"
+        <n-menu :inverted="thethemecolor" :collapsed-width="64" :collapsed-icon-size="22" default-expand-all=true
             @update:value="handleUpdateValue" :options="navs" :value="active" />
     </n-layout-sider>
 </template>

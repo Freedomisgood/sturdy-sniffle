@@ -1,12 +1,19 @@
 <template>
     <div class="container">
-        <h1>所有模板</h1>
+        <div class="clearTitle">
+            <a title="点击-立即清除缓存"><h1 @click="clearCacheAndrefresh">所有模板</h1></a>
+        </div>
+
         <div class="boxes">
               <n-grid :x-gap="12" :y-gap="8" :cols="4">
                 <n-grid-item v-for="item in configs" :key="item">
-                  <n-card class="card" :title="item.template_name" embedded :bordered="false" 
+                  <n-card class="card"  :title="item.template_name" embedded :bordered="false" 
                   @click.stop="goto(item)"
-                    > {{ showText(item.description) }}</n-card
+                    > 
+                    <div style="font-size: 1.2em;">{{ showText(item.description) }}</div>
+                    <br/>
+                    <em>{{ item.committed_date }}</em>
+                    </n-card
                   >
                 </n-grid-item>
               </n-grid>
@@ -18,7 +25,7 @@
     import {defineComponent, onMounted, ref, computed} from 'vue'
     import { useRouter } from "vue-router"
     
-    import { getAllOptions } from "../api/index.js"
+    import { getAllOptions, clearCache } from "../api/index.js"
     import { NCard } from "naive-ui"    
     
     export default defineComponent({
@@ -64,10 +71,18 @@
                 return text;
             }
             
+            
+            function clearCacheAndrefresh(){
+                clearCache()
+                router.go(0)
+            }
+            
             return {
                 configs,
                 goto,
-                showText
+                showText,
+                // clearCache,
+                clearCacheAndrefresh
             }
         },
     })
@@ -76,10 +91,29 @@
 <style scoped lang="scss">
     .card {
         height: 250px;
+        background-color: gainsboro;
         
         &:hover{
-            background-color: lightgray;
+            background-color: lightgoldenrodyellow;
             cursor:pointer;
         }
+    }
+    
+
+    .clearTitle{
+        // .reminder {
+        //     display: none;
+        //     margin-top: 1px;
+        // }
+        
+       &:hover{
+           // .reminder {
+           //     background-color: lightyellow;
+           //     color: red;
+           //     display: inline;
+           // }
+           background-color: ghostwhite;
+           cursor:pointer;
+       } 
     }
 </style>

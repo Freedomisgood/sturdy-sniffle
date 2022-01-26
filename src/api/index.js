@@ -18,21 +18,29 @@ const getAllOptions = () => {
     })
 }
 
-
-// deprecated
-const doGenerte = (template, options) => {
-    console.log("doGenerte")
+const clearCache = () => {
+    console.log("clearCache")
     return requests({
-        url: "/generate?template=" + template,
+        url: "/clear-cache",
         method: "get",
-        data: options
     })
 }
 
+
+// deprecated
+// const doGenerte = (template, options) => {
+//     console.log("doGenerte")
+//     return requests({
+//         url: "/generate?template=" + template,
+//         method: "get",
+//         data: options
+//     })
+// }
 
 
 export {
     getOption,
     getAllOptions,
-    doGenerte
+    clearCache,
+    // doGenerte
 }
