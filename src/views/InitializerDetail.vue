@@ -4,12 +4,25 @@
     </div>
     
     <div class="form-table-div">
-        <n-form style="width: 500px;" :model="configData.data" :label-width="120" ref="formRef">
+            <n-form style="width: 500px;" 
+            :model="configData.data" 
+            :label-width="120" 
+            ref="formRef"
+        >
             <!-- config为每一个配置项 -->
+<!--                
             <template v-for="(val, key, i) in configData.data" :key=key>
+
                 <n-form-item size='large' :label="key">
                     <n-input v-model:value="configData.data[key]" :placeholder="val" />
                 </n-form-item>
+            </template>
+-->                
+            <template v-for="item in configData.data" :key=item>
+                <n-form-item size='large' :label="showLabel(item)">
+                    <n-input v-model:value="postData.data[item.field]" :placeholder="item.description" />
+                </n-form-item>
+                <!-- <span class="note" v-if="item.description">note: {{item.description}}</span> -->
             </template>
         </n-form>
     </div>
@@ -55,16 +68,17 @@
 
 import requests from "../utils/requests/index.js"
 
-
-    function simplyData(params, str) {
-        const res = {}
-        for (let key in params) {
-            if (!key.includes(str)) {
-                res[key] = params[key]
-            }
-        }
-        return res
-    }
+    // 交给后端去除
+    // function simplyData(params, ignore_field) {
+    //     // 删除包含ignore_field的属性
+    //     const res = {}
+    //     for (let key in params) {
+    //         if (!key.includes(ignore_field)) {
+    //             res[key] = params[key]
+    //         }
+    //     }
+    //     return res
+    // }
 
     export default defineComponent({
         components: {
@@ -86,6 +100,10 @@ import requests from "../utils/requests/index.js"
             const configData = reactive({
                 data: {}
             })
+            // 表单接收参数
+            const postData = reactive({
+                data: {}
+            })
 
             onMounted(
                 getConfigData()
@@ -94,25 +112,39 @@ import requests from "../utils/requests/index.js"
             async function getConfigData() {
                 let result = await getOption(template.value);
                 if (result.status === 200) {
-                    let d = result.data.data
-                    if (d.length == 1) {
-                        configData.data = simplyData(d[0], "slug")
+                    // let d = result.data.data
+                    // console.log("d", d)
+                    // if (d.length == 1) {
+                    //     configData.data = simplyData(d[0], "slug")
+                    // }
+                    configData.data = result.data.data
+                    // console.log("configData.data", configData.data)
+                    
+                    // 可以删除, 如果要初始化就有初值的话, 就打开
+                    for (let i in configData.data){
+                        let v = configData.data[i];
+                        postData.data[v.field] = v.value
                     }
+                    postData.data.template = template.value
+                    // console.log(postData.data)
                 }
             }
 
             async function generate() {
                 var a = document.createElement('a');
-                let params = {
-                    ...configData.data
-                }
-                params.template = template.value
-
-                var url = combileURLandParams(requests.URLs.generate, params)
+                var url = combileURLandParams(requests.URLs.generate, postData.data)
                 a.href = url;
                 a.click();
             }
-
+            
+            function showLabel(item){
+                console.log("item", item)
+                if (item.description){
+                    return item.field + ": " + item.description;
+                }
+                console.log("item.description", item.description)
+                return item.field;
+            }
             
             function clearCacheAndrefresh(){
                 clearCache()
@@ -123,7 +155,9 @@ import requests from "../utils/requests/index.js"
                 formRef,
                 configData,
                 generate,
-                clearCacheAndrefresh
+                clearCacheAndrefresh,
+                postData,
+                showLabel
             }
         }
     })
@@ -142,5 +176,10 @@ import requests from "../utils/requests/index.js"
           background-color: ghostwhite;
           cursor:pointer;
       } 
+   }
+   
+   .note{
+       font-size: 8px;
+       color: gray;
    }
 </style>
